@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>photo-3d</title>
+        <link rel="stylesheet" href="css/index.css" />
+        <script src="./css/Star.js"></script>
+    </head>
+    <body>
+        <!--/*外层最大容器*/-->
+        <div class="wrap">
+    <!--    /*包裹所有元素的容器*/-->
+        <div class="cube">
+            <!--前面图片 -->
+            <div class="out_front">
+                <img src="img/1.jpg"  class="pic"/>
+            </div>
+            <!--后面图片 -->
+            <div class="out_back">
+                <img src="img/2.jpg"  class="pic"/>
+            </div>
+            <!--左图片 -->
+            <div class="out_left">
+                <img src="img/3.jpg"  class="pic"/>
+            </div>
+            <div class="out_right">
+                <img src="img/4.jpg"  class="pic"/>
+            </div>
+            <div class="out_top">
+                <img src="img/5.jpg"  class="pic"/>
+            </div>
+            <div class="out_bottom">
+                <img src="img/6.jpg"  class="pic"/>
+            </div>
+            <!--小正方体 --> 
+            <span class="in_front">
+                <img src="img/7.jpg" class="in_pic" />
+            </span>
+            <span class="in_back">
+                 <img src="img/8.jpg" class="in_pic" />
+            </span>
+            <span class="in_left">
+                <img src="img/9.jpg" class="in_pic" />
+            </span>
+            <span class="in_right">
+                <img src="img/10.jpg" class="in_pic" />
+            </span>
+            <span class="in_top">
+                <img src="img/11.jpg" class="in_pic" />
+            </span>
+            <span class="in_bottom">
+                <img src="img/12.jpg" class="in_pic" />
+            </span>
+        </div>
+        </div>
+<audio autoplay controls loop>
+<source src=".\css\1.mp3" type='audio/ogg'>
+<source src=".\css\1.mp3" type='audio/mpeg'>
+</audio>
+<div>
+    <canvas id="starBg"></canvas>
+  </div>
+  <script type="text/javascript">
+    let stars = [];
+    const maxStars = 1100; // 星星数量
+
+    function initCanvas() {
+      const canvas = document.getElementById("starBg");
+      const ctx = canvas.getContext("2d");
+      const w = (canvas.width = window.innerWidth);
+      const h = (canvas.height = window.innerHeight);
+
+      const canvas2 = document.createElement("canvas");
+      const ctx2 = canvas2.getContext("2d");
+      canvas2.width = 100;
+      canvas2.height = 100;
+      const half = canvas2.width / 2;
+      const gradient2 = ctx2.createRadialGradient(half, half, 0, half, half, half);
+      gradient2.addColorStop(0.025, "#CCC");
+      gradient2.addColorStop(0.1, "hsl(217, 61%, 33%)");
+      gradient2.addColorStop(0.25, "hsl(217, 64%, 6%)");
+      gradient2.addColorStop(1, "transparent");
+
+      ctx2.fillStyle = gradient2;
+      ctx2.beginPath();
+      ctx2.arc(half, half, half, 0, Math.PI * 2);
+      ctx2.fill();
+
+      for (var i = 1; i < maxStars; i++) {
+        const star = new Star({w, h}, ctx, canvas2);
+        stars[i] = star;
+      }
+      function animation() {
+        ctx.globalCompositeOperation = "source-over";
+        ctx.globalAlpha = 0.8; //尾巴
+        ctx.fillStyle = "hsla(217, 64%, 6%, 2)";
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.globalCompositeOperation = "lighter";
+        for (let i = 1; i < stars.length; i++) {
+          stars[i].draw();
+        }
+
+        window.requestAnimationFrame(animation);
+      }
+      animation();
+    }
+    initCanvas();
+  </script>
+    </body>
+</html>
